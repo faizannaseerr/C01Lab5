@@ -8,19 +8,12 @@ on:
 
 jobs:
   build:
-    name: Backend test and MongoDB setup
+    name: Backend test
     runs-on: ubuntu-latest
 
     defaults:
       run:
         working-directory: ./quirknotes/backend
-
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-        options: --name mongodb
 
     strategy:
       matrix:
@@ -34,14 +27,26 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
-        run: npm install
+      - run: npm i
 
+      # Install and run MongoDB
+      - name: Set up MongoDB
+        uses: mongodb/setup-mongodb@v1
+        with:
+          mongodb-version: "4.4"
+
+      # Start MongoDB service
       - name: Start MongoDB
-        run: npm run start:mongodb &
+        run: sudo service mongod start
 
-      - name: Run server.js
-        run: npm run start:server
+      # Run server.js in the background
+      - name: Start server
+        run: node server.js &
+        background: true
 
-      - name: Run tests
-        run: npm test
+      # Wait for MongoDB and server to start
+      - name: Wait for server and MongoDB to start
+        run: sleep 10s
+
+      # Run tests
+      - run: npm test
