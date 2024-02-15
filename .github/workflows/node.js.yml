@@ -11,9 +11,18 @@ jobs:
     name: Backend test
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: --name mongodb
+
     defaults:
       run:
         working-directory: ./quirknotes/backend
+        services:
+          mongodb: mongodb
 
     strategy:
       matrix:
@@ -28,22 +37,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: npm i
-
-      # Start MongoDB service
-      - name: Start MongoDB
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mongodb
-          sudo service mongodb start
-          sleep 10s  # Wait for MongoDB to start
-
-      # Run server.js in the background
-      - name: Start server
-        run: node server.js &
-
-      # Wait for server to start
-      - name: Wait for server to start
-        run: sleep 10s
-
-      # Run tests
+      - run: npm install mongodb
+      - run: npm run dev
       - run: npm test
