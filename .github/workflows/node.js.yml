@@ -11,18 +11,9 @@ jobs:
     name: Backend test
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-        options: --name mongodb
-
     defaults:
       run:
         working-directory: ./quirknotes/backend
-        services:
-          mongodb: mongodb
 
     strategy:
       matrix:
@@ -35,8 +26,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
       - run: npm i
-      - run: npm install mongodb
       - run: npm run dev
       - run: npm test
