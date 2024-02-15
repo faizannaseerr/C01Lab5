@@ -40,7 +40,6 @@ jobs:
       # Run server.js in the background
       - name: Start server
         run: node server.js &
-        background: true
 
       # Wait for server to start
       - name: Wait for server to start
