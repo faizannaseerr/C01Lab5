@@ -42,7 +42,6 @@ jobs:
       # Run server.js in the background
       - name: Start server
         run: node server.js &
-        background: true
 
       # Wait for MongoDB and server to start
       - name: Wait for server and MongoDB to start
