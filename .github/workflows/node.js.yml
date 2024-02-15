@@ -29,22 +29,21 @@ jobs:
 
       - run: npm i
 
-      # Install and run MongoDB
-      - name: Set up MongoDB
-        uses: mongodb/setup-mongodb@v1
-        with:
-          mongodb-version: "4.4"
-
       # Start MongoDB service
       - name: Start MongoDB
-        run: sudo service mongod start
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mongodb
+          sudo service mongodb start
+          sleep 10s  # Wait for MongoDB to start
 
       # Run server.js in the background
       - name: Start server
         run: node server.js &
+        background: true
 
-      # Wait for MongoDB and server to start
-      - name: Wait for server and MongoDB to start
+      # Wait for server to start
+      - name: Wait for server to start
         run: sleep 10s
 
       # Run tests
