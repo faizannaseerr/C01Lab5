@@ -26,6 +26,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: mkdir data
+          cd data
+          mkdir db
+          cd ..
+          mongod --dbpath=.\data\db
       - run: npm i
       - run: npm run dev
       - run: npm test
