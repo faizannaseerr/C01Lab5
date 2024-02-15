@@ -38,8 +38,7 @@ jobs:
         run: npm install
 
       - name: Start MongoDB
-        run: npm run start:mongodb
-        background: true
+        run: npm run start:mongodb &
 
       - name: Run server.js
         run: npm run start:server
