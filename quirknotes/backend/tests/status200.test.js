@@ -102,11 +102,25 @@ test("/deleteNote - Delete a note", async () => {
 });
 
 test("/patchNote - Patch with content and title", async () => {
-  const noteIdToUpdate = "noteId"; // Replace with actual ID
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
   const updatedTitle = "Updated Title";
   const updatedContent = "Updated Content";
 
-  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${noteIdToUpdate}`, {
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -120,14 +134,32 @@ test("/patchNote - Patch with content and title", async () => {
   const patchNoteBody = await patchNoteRes.json();
 
   expect(patchNoteRes.status).toBe(200);
-  expect(patchNoteBody.message).toBe("Note patched successfully.");
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+  
 });
 
 test("/patchNote - Patch with just title", async () => {
-  const noteIdToUpdate = "noteId"; // Replace with actual ID
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
   const updatedTitle = "Updated Title";
 
-  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${noteIdToUpdate}`, {
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -140,14 +172,32 @@ test("/patchNote - Patch with just title", async () => {
   const patchNoteBody = await patchNoteRes.json();
 
   expect(patchNoteRes.status).toBe(200);
-  expect(patchNoteBody.message).toBe("Note patched successfully.");
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+  
 });
 
 test("/patchNote - Patch with just content", async () => {
-  const noteIdToUpdate = "noteId"; // Replace with actual ID
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
   const updatedContent = "Updated Content";
 
-  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${noteIdToUpdate}`, {
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -160,10 +210,27 @@ test("/patchNote - Patch with just content", async () => {
   const patchNoteBody = await patchNoteRes.json();
 
   expect(patchNoteRes.status).toBe(200);
-  expect(patchNoteBody.message).toBe("Note patched successfully.");
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
 });
 
 test("/deleteAllNotes - Delete one note", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
   const deleteAllNotesRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
     method: "DELETE",
   });
@@ -171,11 +238,46 @@ test("/deleteAllNotes - Delete one note", async () => {
   const deleteAllNotesBody = await deleteAllNotesRes.json();
 
   expect(deleteAllNotesRes.status).toBe(200);
-  expect(deleteAllNotesBody.message).toBe("All notes deleted successfully.");
+  expect(deleteAllNotesBody.response).toBe("1 note(s) deleted.");
 });
 
 test("/deleteAllNotes - Delete three notes", async () => {
-  // Assuming there are three notes in the system
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteRes2 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteRes3 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
   const deleteAllNotesRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
     method: "DELETE",
   });
@@ -183,11 +285,26 @@ test("/deleteAllNotes - Delete three notes", async () => {
   const deleteAllNotesBody = await deleteAllNotesRes.json();
 
   expect(deleteAllNotesRes.status).toBe(200);
-  expect(deleteAllNotesBody.message).toBe("All notes deleted successfully.");
+  expect(deleteAllNotesBody.response).toBe("3 note(s) deleted.");
 });
 
 test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
-  const noteIdToUpdate = "noteId"; // Replace with actual ID
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const noteIdToUpdate = postNoteBody.insertedId
   const updatedColor = "#FF0000";
 
   const updateNoteColorRes = await fetch(`${SERVER_URL}/updateNoteColor/${noteIdToUpdate}`, {
@@ -203,5 +320,5 @@ test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
   const updateNoteColorBody = await updateNoteColorRes.json();
 
   expect(updateNoteColorRes.status).toBe(200);
-  expect(updateNoteColorBody.message).toBe("Note color updated successfully.");
+  expect(updateNoteColorBody.response).toBe("Note color updated successfully.");
 });
