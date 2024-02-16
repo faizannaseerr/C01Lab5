@@ -33,4 +33,4 @@ jobs:
           mongodb-version: ${{matrix.mongodb-version}}
       - run: npm i
       - run: npm run start
-      - run: npm test
+      - run: npm run test
