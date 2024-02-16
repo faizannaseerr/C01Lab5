@@ -24,6 +24,10 @@ test("/postNote - Post a note", async () => {
 
   expect(postNoteRes.status).toBe(200);
   expect(postNoteBody.response).toBe("Note added succesfully.");
+
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.response._id}`, {
+    method: "DELETE",
+  });
 });
 
 test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
