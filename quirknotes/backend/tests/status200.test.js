@@ -43,7 +43,7 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
   const title = "NoteTitleTest";
   const content = "NoteTitleContent";
 
-  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
     }),
   });
 
-  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+  const postNoteRes2 = await fetch(`${SERVER_URL}/postNote`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
