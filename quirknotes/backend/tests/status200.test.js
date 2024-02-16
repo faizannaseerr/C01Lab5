@@ -32,7 +32,7 @@ test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
   const getAllNotesBody = await getAllNotesRes.json();
 
   expect(getAllNotesRes.status).toBe(200);
-  expect(getAllNotesBody.notes.length).toBe(0);
+  expect(getAllNotesBody.notes).toHaveLength(0);
 });
 
 test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
