@@ -91,14 +91,14 @@ test("/deleteNote - Delete a note", async () => {
   });
 
   const postNoteBody = await postNoteRes.json();
-  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.response[0]._id}`, {
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.insertedId}`, {
     method: "DELETE",
   });
 
   const deleteNoteBody = await deleteNoteRes.json();
 
   expect(deleteNoteRes.status).toBe(200);
-  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.response[0]._id} deleted.`);
+  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} deleted.`);
 });
 
 test("/patchNote - Patch with content and title", async () => {
