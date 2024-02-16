@@ -33,7 +33,7 @@ test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
 
   expect(getAllNotesRes.status).toBe(200);
   console.log(getAllNotesBody.notes)
-  expect(getAllNotesBody.notes).toHaveLength(0);
+  expect(Object.keys(getAllNotesBody.notes).length).toBe(0);
 });
 
 test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
