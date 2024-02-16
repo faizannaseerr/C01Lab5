@@ -54,9 +54,6 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
     }),
   });
 
-  const title = "NoteTitleTest";
-  const content = "NoteTitleContent";
-
   const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
     method: "POST",
     headers: {
@@ -76,7 +73,6 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
   const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
     method: "DELETE",
   });
-  
 });
 
 test("/deleteNote - Delete a note", async () => {
