@@ -76,16 +76,29 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
 });
 
 test("/deleteNote - Delete a note", async () => {
-  // Assuming there is a note with a known ID to delete
-  const noteIdToDelete = "noteId"; // Replace with actual ID
-  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${noteIdToDelete}`, {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.respone[0]._id}`, {
     method: "DELETE",
   });
 
   const deleteNoteBody = await deleteNoteRes.json();
 
   expect(deleteNoteRes.status).toBe(200);
-  expect(deleteNoteBody.message).toBe("Note deleted successfully.");
+  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.respone[0]._id} deleted.`);
 });
 
 test("/patchNote - Patch with content and title", async () => {
