@@ -98,7 +98,7 @@ test("/deleteNote - Delete a note", async () => {
   const deleteNoteBody = await deleteNoteRes.json();
 
   expect(deleteNoteRes.status).toBe(200);
-  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.respone[0]._id} deleted.`);
+  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.response[0]._id} deleted.`);
 });
 
 test("/patchNote - Patch with content and title", async () => {
