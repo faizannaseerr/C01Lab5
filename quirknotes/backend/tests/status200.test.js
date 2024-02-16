@@ -24,4 +24,301 @@ test("/postNote - Post a note", async () => {
 
   expect(postNoteRes.status).toBe(200);
   expect(postNoteBody.response).toBe("Note added succesfully.");
+
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+});
+
+test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
+  const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
+  const getAllNotesBody = await getAllNotesRes.json();
+
+
+  expect(getAllNotesRes.status).toBe(200);
+  expect(getAllNotesBody.response).toHaveLength(0);
+});
+
+test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteRes2 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
+  const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
+  const getAllNotesBody = await getAllNotesRes.json();
+
+  expect(getAllNotesRes.status).toBe(200);
+  expect(getAllNotesBody.response).toHaveLength(2);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+});
+
+test("/deleteNote - Delete a note", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.insertedId}`, {
+    method: "DELETE",
+  });
+
+  const deleteNoteBody = await deleteNoteRes.json();
+
+  expect(deleteNoteRes.status).toBe(200);
+  expect(deleteNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} deleted.`);
+});
+
+test("/patchNote - Patch with content and title", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const updatedTitle = "Updated Title";
+  const updatedContent = "Updated Content";
+
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: updatedTitle,
+      content: updatedContent,
+    }),
+  });
+
+  const patchNoteBody = await patchNoteRes.json();
+
+  expect(patchNoteRes.status).toBe(200);
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+  
+});
+
+test("/patchNote - Patch with just title", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const updatedTitle = "Updated Title";
+
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: updatedTitle,
+    }),
+  });
+
+  const patchNoteBody = await patchNoteRes.json();
+
+  expect(patchNoteRes.status).toBe(200);
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+  
+});
+
+test("/patchNote - Patch with just content", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const updatedContent = "Updated Content";
+
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content: updatedContent,
+    }),
+  });
+
+  const patchNoteBody = await patchNoteRes.json();
+
+  expect(patchNoteRes.status).toBe(200);
+  expect(patchNoteBody.response).toBe(`Document with ID ${postNoteBody.insertedId} patched.`);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+});
+
+test("/deleteAllNotes - Delete one note", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
+  const deleteAllNotesRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+
+  const deleteAllNotesBody = await deleteAllNotesRes.json();
+
+  expect(deleteAllNotesRes.status).toBe(200);
+  expect(deleteAllNotesBody.response).toBe("1 note(s) deleted.");
+});
+
+test("/deleteAllNotes - Delete three notes", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes1 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteRes2 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteRes3 = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
+  const deleteAllNotesRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+
+  const deleteAllNotesBody = await deleteAllNotesRes.json();
+
+  expect(deleteAllNotesRes.status).toBe(200);
+  expect(deleteAllNotesBody.response).toBe("3 note(s) deleted.");
+});
+
+test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+  const noteIdToUpdate = postNoteBody.insertedId
+  const updatedColor = "#FF0000";
+
+  const updateNoteColorRes = await fetch(`${SERVER_URL}/updateNoteColor/${noteIdToUpdate}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      color: updatedColor,
+    }),
+  });
+
+  const updateNoteColorBody = await updateNoteColorRes.json();
+
+  expect(updateNoteColorRes.status).toBe(200);
+  expect(updateNoteColorBody.message).toBe("Note color updated successfully.");
 });
