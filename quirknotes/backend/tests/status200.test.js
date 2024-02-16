@@ -91,7 +91,7 @@ test("/deleteNote - Delete a note", async () => {
   });
 
   const postNoteBody = await postNoteRes.json();
-  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.respone[0]._id}`, {
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.response[0]._id}`, {
     method: "DELETE",
   });
 
