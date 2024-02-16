@@ -69,7 +69,7 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
   const getAllNotesBody = await getAllNotesRes.json();
 
   expect(getAllNotesRes.status).toBe(200);
-  expect(getAllNotesBody.notes.length).toBe(2);
+  expect(getAllNotesBody.response).toHaveLength(2);
   const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
     method: "DELETE",
   });
