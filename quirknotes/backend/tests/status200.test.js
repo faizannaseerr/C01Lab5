@@ -28,10 +28,11 @@ test("/postNote - Post a note", async () => {
 
 test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
   const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
+  const getAllNotesBody = await getAllNotesRes.json();
 
 
   expect(getAllNotesRes.status).toBe(200);
-  expect(getAllNotesRes.response).toHaveLength(0);
+  expect(getAllNotesBody.response).toHaveLength(0);
 });
 
 test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
