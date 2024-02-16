@@ -40,13 +40,43 @@ test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
 });
 
 test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
-  // Assuming you have added two notes before running this test
-  const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
 
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+
+  const title = "NoteTitleTest";
+  const content = "NoteTitleContent";
+
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title,
+      content: content,
+    }),
+  });
+  
+  const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
   const getAllNotesBody = await getAllNotesRes.json();
 
   expect(getAllNotesRes.status).toBe(200);
   expect(getAllNotesBody.notes.length).toBe(2);
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+  });
+  
 });
 
 test("/deleteNote - Delete a note", async () => {
